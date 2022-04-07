@@ -1,0 +1,31 @@
+{
+  "name": "roll-a-ball",
+  "version": "1.0.0",
+  "description": "simple 3d game for getting started with BabylonJS",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -w",
+    "build-production": "webpack -p",
+    "start:dev": "webpack -w & nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "Isaias Pomales",
+  "repository": {
+    "url": "https://github.com/impomales/roll-a-ball.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "babylonjs": "^3.2.0",
+    "cannon": "^0.6.2",
+    "earcut": "^2.2.3",
+    "express": "^4.16.3",
+    "oimo": "^1.0.9",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.1"
+  }
+}

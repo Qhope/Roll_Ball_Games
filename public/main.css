@@ -1,0 +1,36 @@
+hmtl,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.status {
+  position: absolute;
+  background-color: #a0c4ff;
+  padding: 2em;
+  margin: 1.5em 1em;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 1px 2px 15px #777;
+}
+
+#gameCanvas {
+  width: 100vw;
+  height: 100vh;
+}
+#heart {
+  position: absolute;
+  
+  background-color: #a0c4ff;
+  padding: 2em;
+  margin: 1.5em 1em;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 1px 2px 15px #777;
+  right:1.5em
+}
