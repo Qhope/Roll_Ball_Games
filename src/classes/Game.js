@@ -3,11 +3,12 @@ import Ground from "./Ground";
 import Cube from "./Cube";
 import Player from "./Player";
 import Enemy from "./Enemy";
+import CreateMenu from "./MainMenu";
 
-const NUM_OF_CUBES = 1;
+//const NUM_OF_CUBES = 1;
 const GROUND_SIZE = 20;
-const HEART = 3;
-const NUM_OF_ENEMY = 5;
+const HEART = 1;
+//const NUM_OF_ENEMY = 5;
 
 export default class Game {
   constructor(canvasId) {
@@ -64,14 +65,21 @@ export default class Game {
     // ground
     this.ground = new Ground(GROUND_SIZE, this);
     this.ground.rotation.x = Math.PI / 2;
+    this.numOfCubes = 10;
+    this.numOfEnemys = 3;
     // cubes
-    this.placeCubes();
+    this.placeCubes(this.numOfCubes);
     //Enemy
-    this.placeEnemy();
+    this.placeEnemy(this.numOfEnemys);
 
     // player
     this.player = new Player(1, this);
     this.player.position = new BABYLON.Vector3(0, 1, 0);
+
+    //Menu State
+    this.state = CreateMenu(this.engine);
+
+    this.initLevel(this.state);
 
     // check collisions before render.
     this.scene.registerBeforeRender(() => {
@@ -104,17 +112,49 @@ export default class Game {
       ).innerText = `Enemy left: ${this.enemy.length}`;
       //Heart remaining
       document.getElementById("heart").innerText = `Heart: ${this.heart}`;
+      if (this.heart <= 0) {
+        this.pause();
+        alert("Game Over");
+        //this.render();
+      }
     });
 
-    // renders the scene 60 fps.
+    this.render();
+  }
+
+  pause() {
+    this.engine.stopRenderLoop();
+  }
+
+  render() {
     this.engine.runRenderLoop(() => {
-      this.scene.render();
+      if (this.state.switch) {
+        this.state.scene = this.scene;
+      }
+      this.state.scene.render();
     });
   }
 
-  placeCubes() {
+  initLevel(state) {
+    switch (state.level) {
+      case "easy":
+        this.numOfCubes = 10;
+        this.numOfEnemys = 3;
+        break;
+      case "normal":
+        this.numOfCubes = 15;
+        this.numOfEnemys = 5;
+        break;
+      default:
+        this.numOfCubes = 10;
+        this.numOfEnemys = 3;
+        break;
+    }
+  }
+
+  placeCubes(numOfCubes) {
     this.cubes = [];
-    for (let i = 0; i < NUM_OF_CUBES; i++) {
+    for (let i = 0; i < numOfCubes; i++) {
       const cube = new Cube(0.35, this);
       cube.position.y = 0.5;
       cube.rotation.x = Math.PI / 4;
@@ -127,9 +167,10 @@ export default class Game {
       this.cubes.push(cube);
     }
   }
-  placeEnemy() {
+
+  placeEnemy(numOfEnemys) {
     this.enemy = [];
-    for (let i = 0; i < NUM_OF_ENEMY; i++) {
+    for (let i = 0; i < numOfEnemys; i++) {
       const enemy = new Enemy(0.35, this);
       enemy.position.y = 0.5;
       enemy.rotation.x = Math.PI / 4;

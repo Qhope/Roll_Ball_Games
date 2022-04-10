@@ -16,6 +16,7 @@ body {
   font-weight: bold;
   font-size: 20px;
   box-shadow: 1px 2px 15px #777;
+  display: none;
 }
 
 #gameCanvas {
@@ -24,7 +25,6 @@ body {
 }
 #heart {
   position: absolute;
-  
   background-color: #a0c4ff;
   padding: 2em;
   margin: 1.5em 1em;
@@ -32,5 +32,22 @@ body {
   font-weight: bold;
   font-size: 20px;
   box-shadow: 1px 2px 15px #777;
-  right:1.5em
+  right:1.5em;
+  display: none;
+}
+.MainMenu{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #a0c4ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  gap: 10px;
+  border-radius: 10px;
+  display: none;
 }
