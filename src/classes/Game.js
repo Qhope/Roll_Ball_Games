@@ -7,7 +7,7 @@ import CreateMenu from "./MainMenu";
 
 //const NUM_OF_CUBES = 1;
 const GROUND_SIZE = 20;
-const HEART = 1;
+const HEART = 3;
 //const NUM_OF_ENEMY = 5;
 
 export default class Game {
