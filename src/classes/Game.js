@@ -80,9 +80,16 @@ export default class Game {
     this.state = CreateMenu(this.engine);
 
     this.initLevel(this.state);
+    //Sound hit score
+    const hitScore = new BABYLON.Sound(
+      "Music",
+      "./sound/hitScore.wav",
+      this.scene
+    );
 
     // check collisions before render.
     this.scene.registerBeforeRender(() => {
+      //Cube hit
       let idx;
       this.cubes.forEach((cube, i) => {
         if (cube.intersectsMesh(this.player)) {
@@ -90,15 +97,19 @@ export default class Game {
           idx = i;
         }
       });
-      if (idx !== undefined) this.cubes.splice(idx, 1);
+      if (idx !== undefined) {
+        this.cubes.splice(idx, 1);
+        hitScore.play();
+      }
       document.getElementById(
         "info"
       ).innerText = `Cubes left: ${this.cubes.length}`;
 
-      //Enemy init
+      //Enemy Hit
       let idx2;
       this.enemy.forEach((enemy, i) => {
         if (enemy.intersectsMesh(this.player)) {
+          console.log("Enemy hit");
           enemy.dispose();
           idx2 = i;
         }
@@ -162,6 +173,7 @@ export default class Game {
       // RANDOM NUMBER BETWEEN MIN MAX
       const max = GROUND_SIZE / 2 - 1.5;
       const min = -GROUND_SIZE / 2 + 1.5;
+
       cube.position.x = Math.random() * (max - min) + min;
       cube.position.z = Math.random() * (max - min) + min;
       this.cubes.push(cube);
@@ -171,13 +183,14 @@ export default class Game {
   placeEnemy(numOfEnemys) {
     this.enemy = [];
     for (let i = 0; i < numOfEnemys; i++) {
-      const enemy = new Enemy(0.35, this);
+      const enemy = new Enemy(0.5, this);
       enemy.position.y = 0.5;
       enemy.rotation.x = Math.PI / 4;
       enemy.rotation.z = Math.PI / 4;
       // RANDOM NUMBER BETWEEN MIN MAX
       const max = GROUND_SIZE / 2 - 1.5;
       const min = -GROUND_SIZE / 2 + 1.5;
+      console.log("enemy", enemy);
       enemy.position.x = Math.random() * (max - min) + min;
       enemy.position.z = Math.random() * (max - min) + min;
       this.enemy.push(enemy);
