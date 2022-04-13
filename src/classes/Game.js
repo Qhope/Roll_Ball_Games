@@ -129,6 +129,12 @@ export default class Game {
         this.gameOverScene();
         this.restart();
       }
+      if (this.cubes.length <= 0) {
+        this.pause();
+        this.engine.dispose();
+        this.winningScene();
+        this.restart();
+      }
     });
 
     this.render();
@@ -144,9 +150,16 @@ export default class Game {
     document.getElementById("heart").style.display = "none";
   }
 
+  winningScene() {
+    document.querySelector(".Winning").style.display = "flex";
+    document.querySelector(".status").style.display = "none";
+    document.getElementById("heart").style.display = "none";
+  }
+
   restart() {
     setTimeout(function () {
       document.querySelector(".GameOver").style.display = "none";
+      document.querySelector(".Winning").style.display = "none";
       const game = new Game("gameCanvas");
     }, 3000);
   }
