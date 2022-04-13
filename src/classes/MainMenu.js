@@ -18,6 +18,10 @@ const CreateMenu = (engine) => {
 
   const menu = document.querySelector(".MainMenu");
   menu.style.display = "flex";
+  const status = document.querySelector(".status");
+  const heartInfo = document.getElementById("heart");
+  status.style.display = "none";
+  heartInfo.style.display = "none";
 
   let state = {
     scene: scene,
