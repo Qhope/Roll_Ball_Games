@@ -20,7 +20,7 @@ export default class Game {
     //Menu State
     this.state = CreateMenu(this.engine);
 
-    // create a scene.
+    // create a game scene.
     this.scene = new BABYLON.Scene(this.engine);
     this.scene.ambientColor = BABYLON.Color3.White();
     // set up a camera.
