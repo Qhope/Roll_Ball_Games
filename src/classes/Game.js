@@ -125,8 +125,15 @@ export default class Game {
       document.getElementById("heart").innerText = `Heart: ${this.heart}`;
       if (this.heart <= 0) {
         this.pause();
-        alert("Game Over");
-        //this.render();
+        this.engine.dispose();
+        this.gameOverScene();
+        this.restart();
+      }
+      if (this.cubes.length <= 0) {
+        this.pause();
+        this.engine.dispose();
+        this.winningScene();
+        this.restart();
       }
     });
 
@@ -137,6 +144,25 @@ export default class Game {
     this.engine.stopRenderLoop();
   }
 
+  gameOverScene() {
+    document.querySelector(".GameOver").style.display = "flex";
+    document.querySelector(".status").style.display = "none";
+    document.getElementById("heart").style.display = "none";
+  }
+
+  winningScene() {
+    document.querySelector(".Winning").style.display = "flex";
+    document.querySelector(".status").style.display = "none";
+    document.getElementById("heart").style.display = "none";
+  }
+
+  restart() {
+    setTimeout(function () {
+      document.querySelector(".GameOver").style.display = "none";
+      document.querySelector(".Winning").style.display = "none";
+      const game = new Game("gameCanvas");
+    }, 3000);
+  }
   render() {
     this.engine.runRenderLoop(() => {
       if (this.state.switch) {
