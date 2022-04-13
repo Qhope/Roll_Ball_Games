@@ -25,7 +25,7 @@ const CreateMenu = (engine) => {
 
   let state = {
     scene: scene,
-    level: "easy",
+    level: "",
     switch: false,
   };
   const easy = document.getElementById("easy");
@@ -33,27 +33,22 @@ const CreateMenu = (engine) => {
     menu.style.display = "none";
     state.level = "easy";
     state.switch = true;
-    console.log("Switch");
 
     const status = document.querySelector(".status");
     const heartInfo = document.getElementById("heart");
     status.style.display = "block";
     heartInfo.style.display = "block";
   });
-
   const normal = document.getElementById("normal");
   normal.addEventListener("click", function () {
     menu.style.display = "none";
     state.level = "normal";
     state.switch = true;
-    console.log("Switch");
-
     const status = document.querySelector(".status");
     const heartInfo = document.getElementById("heart");
     status.style.display = "block";
     heartInfo.style.display = "block";
   });
-
   return state;
 };
 

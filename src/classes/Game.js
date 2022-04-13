@@ -16,6 +16,10 @@ export default class Game {
     const canvas = document.getElementById(canvasId);
     // initiate the engine.
     this.engine = new BABYLON.Engine(canvas, true);
+
+    //Menu State
+    this.state = CreateMenu(this.engine);
+
     // create a scene.
     this.scene = new BABYLON.Scene(this.engine);
     this.scene.ambientColor = BABYLON.Color3.White();
@@ -29,12 +33,6 @@ export default class Game {
       this.scene
     );
     this.heart = HEART;
-
-    // this.camera = new BABYLON.FreeCamera(
-    //   "camera",
-    //   new BABYLON.Vector3(-15, 10, -15),
-    //   this.scene
-    // );
     // sets where the camera is looking at.
     this.camera.setTarget(BABYLON.Vector3.Zero());
     // allows user to control camera.
@@ -65,27 +63,13 @@ export default class Game {
     // ground
     this.ground = new Ground(GROUND_SIZE, this);
     this.ground.rotation.x = Math.PI / 2;
-    this.numOfCubes = 10;
-    this.numOfEnemys = 3;
-    // cubes
-    this.placeCubes(this.numOfCubes);
-    //Enemy
-    this.placeEnemy(this.numOfEnemys);
 
     // player
     this.player = new Player(1, this);
     this.player.position = new BABYLON.Vector3(0, 1, 0);
 
-    //Menu State
-    this.state = CreateMenu(this.engine);
-
-    this.initLevel(this.state);
     //Sound hit score
-    const hitScore = new BABYLON.Sound(
-      "Music",
-      "./sound/hitScore.wav",
-      this.scene
-    );
+    this.initSound();
 
     // check collisions before render.
     this.scene.registerBeforeRender(() => {
@@ -99,7 +83,7 @@ export default class Game {
       });
       if (idx !== undefined) {
         this.cubes.splice(idx, 1);
-        hitScore.play();
+        this.hitScoreSound.play();
       }
       document.getElementById(
         "info"
@@ -117,6 +101,7 @@ export default class Game {
       if (idx2 !== undefined) {
         this.enemy.splice(idx2, 1);
         this.heart -= 1;
+        this.loseScoreSound.play();
       }
       document.getElementById(
         "enemy"
@@ -124,22 +109,39 @@ export default class Game {
       //Heart remaining
       document.getElementById("heart").innerText = `Heart: ${this.heart}`;
       if (this.heart <= 0) {
+        this.failSound.play();
         this.pause();
-        this.engine.dispose();
+        //this.engine.dispose();
         this.gameOverScene();
         this.restart();
       }
       if (this.cubes.length <= 0) {
+        this.winSound.play();
         this.pause();
-        this.engine.dispose();
+        //this.engine.dispose();
         this.winningScene();
         this.restart();
       }
     });
 
+    this.isHaveLevel = false;
     this.render();
   }
 
+  initSound() {
+    this.hitScoreSound = new BABYLON.Sound(
+      "Music",
+      "./sound/hitScore.wav",
+      this.scene
+    );
+    this.loseScoreSound = new BABYLON.Sound(
+      "Music",
+      "./sound/loseScore.wav",
+      this.scene
+    );
+    this.failSound = new BABYLON.Sound("Music", "./sound/fail.wav", this.scene);
+    this.winSound = new BABYLON.Sound("Music", "./sound/win.wav", this.scene);
+  }
   pause() {
     this.engine.stopRenderLoop();
   }
@@ -166,6 +168,13 @@ export default class Game {
   render() {
     this.engine.runRenderLoop(() => {
       if (this.state.switch) {
+        if (!this.isHaveLevel) {
+          this.initLevel(this.state);
+          // cubes
+          this.placeCubes(this.numOfCubes);
+          //Enemy
+          this.placeEnemy(this.numOfEnemys);
+        }
         this.state.scene = this.scene;
       }
       this.state.scene.render();
@@ -177,14 +186,14 @@ export default class Game {
       case "easy":
         this.numOfCubes = 10;
         this.numOfEnemys = 3;
+        this.isHaveLevel = true;
         break;
       case "normal":
         this.numOfCubes = 15;
         this.numOfEnemys = 5;
+        this.isHaveLevel = true;
         break;
       default:
-        this.numOfCubes = 10;
-        this.numOfEnemys = 3;
         break;
     }
   }
@@ -216,7 +225,7 @@ export default class Game {
       // RANDOM NUMBER BETWEEN MIN MAX
       const max = GROUND_SIZE / 2 - 1.5;
       const min = -GROUND_SIZE / 2 + 1.5;
-      console.log("enemy", enemy);
+
       enemy.position.x = Math.random() * (max - min) + min;
       enemy.position.z = Math.random() * (max - min) + min;
       this.enemy.push(enemy);

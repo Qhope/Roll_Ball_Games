@@ -16,7 +16,5 @@ export default class Enemy extends GameObject {
     material.specularColor = new BABYLON.Color3(0.7, 0.7, 1);
     this.material = material;
     game.shadows.getShadowMap().renderList.push(this);
-
-    console.log("Sphere");
   }
 }
